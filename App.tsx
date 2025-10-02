@@ -6,7 +6,7 @@
 
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import ReactCrop, { type Crop, type PixelCrop } from 'react-image-crop';
-import { generateEditedImage, generateFilteredImage, generateAdjustedImage, generateErasedImage, generateUpscaledImage } from './services/geminiService';
+import { generateEditedImage, generateFilteredImage, generateAdjustedImage, generateErasedImage, generateUpscaledImage, generateWatermarkRemovedImage } from './services/geminiService';
 import Spinner from './components/Spinner';
 import FilterPanel from './components/FilterPanel';
 import AdjustmentPanel from './components/AdjustmentPanel';
@@ -358,6 +358,28 @@ const App: React.FC = () => {
     } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
         setError(`Failed to apply the upscale. ${errorMessage}`);
+        console.error(err);
+    } finally {
+        setIsLoading(false);
+    }
+  }, [currentImage, addImageToHistory]);
+
+  const handleApplyWatermarkRemoval = useCallback(async () => {
+    if (!currentImage) {
+      setError('No image loaded to remove a watermark from.');
+      return;
+    }
+    
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+        const resultImageUrl = await generateWatermarkRemovedImage(currentImage);
+        const newImageFile = dataURLtoFile(resultImageUrl, `watermark-removed-${Date.now()}.png`);
+        addImageToHistory(newImageFile);
+    } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
+        setError(`Failed to remove the watermark. ${errorMessage}`);
         console.error(err);
     } finally {
         setIsLoading(false);
@@ -837,7 +859,7 @@ const App: React.FC = () => {
       case 'crop':
         return <CropPanel onApplyCrop={handleApplyCrop} onSetAspect={setAspect} isLoading={isLoading} isCropping={!!completedCrop?.width && completedCrop.width > 0} />;
       case 'adjust':
-        return <AdjustmentPanel onApplyAdjustment={handleApplyAdjustment} onApplyUpscale={handleApplyUpscale} isLoading={isLoading} />;
+        return <AdjustmentPanel onApplyAdjustment={handleApplyAdjustment} onApplyUpscale={handleApplyUpscale} onApplyWatermarkRemoval={handleApplyWatermarkRemoval} isLoading={isLoading} />;
       case 'filters':
         return <FilterPanel onApplyFilter={handleApplyFilter} isLoading={isLoading} />;
       case 'transform':

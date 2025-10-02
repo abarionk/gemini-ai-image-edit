@@ -215,6 +215,38 @@ Output: Return ONLY the final adjusted image. Do not return text.`;
 };
 
 /**
+ * Generates an image with watermarks, logos, or text removed.
+ * @param originalImage The original image file.
+ * @returns A promise that resolves to the data URL of the clean image.
+ */
+export const generateWatermarkRemovedImage = async (
+    originalImage: File,
+): Promise<string> => {
+    console.log(`Starting watermark removal.`);
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY! });
+    
+    const originalImagePart = await fileToPart(originalImage);
+    const prompt = `You are an expert photo restoration AI. Your task is to identify and completely remove any watermarks, logos, text overlays, timestamps, or other distracting markings from the provided image.
+
+Guidelines:
+- You must reconstruct the area behind the removed elements as accurately and naturally as possible, matching the original image's lighting, texture, and colors.
+- The final image should look as if the watermark was never there.
+- Do not alter the rest of the image in any other way.
+
+Output: Return ONLY the final clean image. Do not return text.`;
+    const textPart = { text: prompt };
+
+    console.log('Sending image and watermark removal prompt to the model...');
+    const response: GenerateContentResponse = await ai.models.generateContent({
+        model: 'gemini-2.5-flash-image-preview',
+        contents: { parts: [originalImagePart, textPart] },
+    });
+    console.log('Received response from model for watermark removal.', response);
+    
+    return handleApiResponse(response, 'watermark-removal');
+};
+
+/**
  * Generates an upscaled image using generative AI.
  * @param originalImage The original image file.
  * @returns A promise that resolves to the data URL of the upscaled image.
