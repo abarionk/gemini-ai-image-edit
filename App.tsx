@@ -872,44 +872,44 @@ const App: React.FC = () => {
 
   return (
     <div className="h-screen text-gray-100 flex flex-col md:flex-row">
-      <aside className="w-full md:w-28 bg-black/20 border-b-2 md:border-b-0 md:border-r-2 border-gray-800/70 p-3 flex md:flex-col gap-4">
+      <aside className="w-full md:w-28 bg-black/20 border-b-2 md:border-b-0 md:border-r-2 border-gray-800/70 p-2 flex md:flex-col gap-2">
           <div className="hidden md:block text-center pt-1">
-              <h2 className="text-xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-300">Pixshop</h2>
+              <h2 className="text-lg font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-blue-400 to-cyan-300">Pixshop</h2>
           </div>
           <nav className="flex-grow">
-              <ul className="flex flex-row md:flex-col justify-around md:justify-start gap-2">
+              <ul className="flex flex-row flex-wrap justify-center md:flex-col md:justify-start gap-1">
                    <li>
                       <button
                           onClick={switchToGenerator}
-                          className="w-full flex flex-col items-center gap-1 p-3 rounded-lg transition-all duration-200 text-gray-400 hover:bg-white/10 hover:text-white"
+                          className="w-full flex flex-col items-center gap-1 p-1 md:p-2 rounded-lg transition-all duration-200 text-gray-400 hover:bg-white/10 hover:text-white"
                           aria-label="Generate Image"
                       >
-                          <SparklesIcon className="w-7 h-7" />
+                          <SparklesIcon className="w-6 h-6 md:w-7 md:h-7" />
                           <span className="text-xs font-semibold capitalize">Generate</span>
                       </button>
                   </li>
-                  <div className="h-full md:h-auto w-px md:w-full bg-gray-700 mx-2 md:mx-0 md:my-2"></div>
+                  <div className="h-full md:h-auto w-px md:w-full bg-gray-700 mx-2 md:mx-0 md:my-1"></div>
                   {tabs.map(tab => (
                       <li key={tab.id}>
                           <button
                               onClick={() => handleTabChange(tab.id)}
-                              className={`w-full flex flex-col items-center gap-1 p-3 rounded-lg transition-all duration-200 ${
+                              className={`w-full flex flex-col items-center gap-1 p-1 md:p-2 rounded-lg transition-all duration-200 ${
                                   activeTab === tab.id
                                       ? 'bg-blue-500/20 text-blue-300'
                                       : 'text-gray-400 hover:bg-white/10 hover:text-white'
                               }`}
                               aria-label={tab.name}
                           >
-                              <tab.icon className="w-7 h-7" />
+                              <tab.icon className="w-6 h-6 md:w-7 md:h-7" />
                               <span className="text-xs font-semibold capitalize">{tab.name}</span>
                           </button>
                       </li>
                   ))}
               </ul>
           </nav>
-          <div className="flex flex-row md:flex-col justify-around md:justify-start gap-2">
-                <button onClick={handleUndo} disabled={!canUndo} className="p-3 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Undo"><UndoIcon className="w-6 h-6 mx-auto" /></button>
-                <button onClick={handleRedo} disabled={!canRedo} className="p-3 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Redo"><RedoIcon className="w-6 h-6 mx-auto" /></button>
+          <div className="flex flex-row flex-wrap justify-center md:flex-col md:justify-start gap-1">
+                <button onClick={handleUndo} disabled={!canUndo} className="p-1 md:p-2 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Undo"><UndoIcon className="w-5 h-5 md:w-6 md:h-6 mx-auto" /></button>
+                <button onClick={handleRedo} disabled={!canRedo} className="p-1 md:p-2 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Redo"><RedoIcon className="w-5 h-5 md:w-6 md:h-6 mx-auto" /></button>
                 {canUndo && (
                     <button
                         onMouseDown={() => setIsComparing(true)}
@@ -917,18 +917,18 @@ const App: React.FC = () => {
                         onMouseLeave={() => setIsComparing(false)}
                         onTouchStart={() => setIsComparing(true)}
                         onTouchEnd={() => setIsComparing(false)}
-                        className="p-3 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white"
+                        className="p-1 md:p-2 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white"
                         aria-label="Compare with original"
                     >
-                        <EyeIcon className="w-6 h-6 mx-auto" />
+                        <EyeIcon className="w-5 h-5 md:w-6 md:h-6 mx-auto" />
                     </button>
                 )}
-                <button onClick={handleReset} disabled={!canUndo} className="p-3 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Reset All Changes"><ResetIcon className="w-6 h-6 mx-auto" /></button>
+                <button onClick={handleReset} disabled={!canUndo} className="p-1 md:p-2 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Reset All Changes"><ResetIcon className="w-5 h-5 md:w-6 md:h-6 mx-auto" /></button>
                 
-                <div className="h-full md:h-auto w-px md:w-full bg-gray-700 mx-2 md:mx-0 md:my-2"></div>
+                <div className="h-full md:h-auto w-px md:w-full bg-gray-700 mx-2 md:mx-0 md:my-1"></div>
                 
-                <button onClick={handleStartOver} className="p-3 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white" aria-label="Start Over"><UploadIcon className="w-6 h-6 mx-auto" /></button>
-                <button onClick={handleDownload} className="p-3 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white" aria-label="Download Image"><DownloadIcon className="w-6 h-6 mx-auto" /></button>
+                <button onClick={handleStartOver} className="p-1 md:p-2 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white" aria-label="Start Over"><UploadIcon className="w-5 h-5 md:w-6 md:h-6 mx-auto" /></button>
+                <button onClick={handleDownload} className="p-1 md:p-2 rounded-lg text-gray-400 hover:bg-white/10 hover:text-white" aria-label="Download Image"><DownloadIcon className="w-5 h-5 md:w-6 md:h-6 mx-auto" /></button>
           </div>
       </aside>
 
